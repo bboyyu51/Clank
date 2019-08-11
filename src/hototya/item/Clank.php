@@ -7,8 +7,8 @@ use pocketmine\event\Listener;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 
-use pocketmine\network\mcpe\protocol\AddItemEntityPacket;
-use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
+use pocketmine\network\mcpe\protocol\ AddItemActorPacket;
+use pocketmine\network\mcpe\protocol\RemoveActorPacket;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
@@ -309,7 +309,7 @@ class ItemAnime extends Task
     {
         $this->scheduler = $scheduler;
         $dir = $player->getDirectionVector();
-        $pk = new AddItemEntityPacket();
+        $pk = new AddItemActorPacket();
         $pk->entityUniqueId = mt_rand(1000000, 9999999);
         $pk->entityRuntimeId = $pk->entityUniqueId;
         $pk->item = $resultItem;
@@ -346,7 +346,7 @@ class Result extends Task
     private $player;
     private $pk;
 
-    public function __construct(Player $player, AddItemEntityPacket $pk)
+    public function __construct(Player $player, AddItemActorPacket $pk)
     {
         $this->player = $player;
         $this->pk = $pk;
@@ -354,7 +354,7 @@ class Result extends Task
 
     public function onRun(int $currentTick)
     {
-        $pk = new RemoveEntityPacket();
+        $pk = new RemoveActorPacket();
         $pk->entityUniqueId = $this->pk->entityUniqueId;
         $this->player->dataPacket($pk);
         $spk = new LevelEventPacket();
